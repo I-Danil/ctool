@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="ct">
+<head>
+    <meta charset="utf-8">
+    <title>Service Distribution</title>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/jquery.layout.css"/>
+    <link rel="stylesheet" href="css/ct.css"/>
+</head>
+<body>
+
+<div id="ct" ct-layout>
+    <div id="actions-panel" class="actions-pane"></div>
+    <div id="schedule-order-panel" class="schedule-order-pane" schedule-order-layout>
+        <div id="schedule-panel" ng-controller="ScheduleCtrl" class="ui-layout-center" schedule-layout>
+            <div id="kpi-panel" class="ui-layout-north">
+                <div id="zoom">
+                    <img src='img/zoom_icon.gif' class='zoom-icon'>
+                    <div ng-class="{'zoom-step': true, active: zoom == 2}" ng-click='zoomChange(2)'>2h</div>
+                    <div ng-class="{'zoom-step': true, active: zoom == 4}" ng-click='zoomChange(4)'>4h</div>
+                    <div ng-class="{'zoom-step': true, active: zoom == 12}" ng-click='zoomChange(12)'>12h</div>
+                    <div ng-class="{'zoom-step': true, active: zoom == 24}" ng-click='zoomChange(24)'>1d</div>
+                    <div ng-class="{'zoom-step': true, active: zoom == 48, inactive: maxZoom < 48}"
+                         ng-click='zoomChange(48)'>2d
+                    </div>
+
+                </div>
+            </div>
+            <div id="vehicle-panel" class="ui-layout-west">
+                <div id="vehicle-toolbar"></div>
+                <!--<div ng-repeat='vehicle in vehicles' class="vehicle" vehicle></div>-->
+            </div>
+            <div id="time-line-panel" class="ui-layout-center">
+                <div id="timescale" timescale></div>
+                <!--<div ng-repeat='schedule in schedules' class="schedule"></div>-->
+            </div>
+            <div id="map-panel" class="ui-layout-south"></div>
+        </div>
+        <div id="orders-panel" class="ui-layout-east">
+        </div>
+    </div>
+</div>
+
+<script src="i18n/ct-locale_en.js"></script>
+<script src="i18n/ct-locale_ru.js"></script>
+<script src="lib/jquery/jquery-2.1.0.js"></script>
+<script src="lib/jquery/jquery-ui.min.js"></script>
+<script src="lib/jquery/jquery.layout.js"></script>
+<script src="lib/angular/angular.js"></script>
+<script src="lib/angular/angular-resource.js"></script>
+<script src="lib/angular/angular-cookies.js"></script>
+<script src="lib/angular/translate/angular-translate.js"></script>
+<script src="lib/angular/ui/ui-bootstrap-tpls-0.10.0.js"></script>
+<script src="scripts/ct.js"></script>
+<script src="scripts/services/services.js"></script>
+<script src="scripts/controllers/controllers.js"></script>
+<script src="scripts/filters/filters.js"></script>
+<script src="scripts/directives/directives.js"></script>
+<script src="scripts/templates/templates.js"></script>
+
+</body>
+</html>

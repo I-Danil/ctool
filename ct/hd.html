@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="ct">
+<head>
+    <meta charset="utf-8">
+    <title>Service Distribution</title>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/ct.css"/>
+</head>
+<body>
+
+<div id="ct" class="container-fluid">
+    <div id="actions-panel" class="row">
+        <div ng-controller="ActionButtonsCtrl" class="col-sm-7">
+            <!--очистить расписание-->
+            <img src="img/broom.png" class="icon" tooltip-placement="right" tooltip="{{ 'clear_schedule' | translate }}">
+            <!--расфиксировать расписание-->
+            <img src="img/unlock.gif" ng-hide="unlocked" ng-click='unlock()' class="icon" tooltip-placement="right" tooltip="{{ 'clear_schedule' | translate }}">
+            <img src="img/unlock-gray.gif" ng-show="unlocked" class="icon" tooltip-placement="right" tooltip="{{ 'clear_schedule' | translate }}">
+            <!--зафиксировать расписание-->
+            <img src="img/lock.gif" ng-hide="locked" ng-click='lock()' class="icon" tooltip-placement="bottom" tooltip="{{ 'clear_schedule' | translate }}">
+            <img src="img/lock-gray.gif" ng-show="locked" class="icon" tooltip-placement="bottom" tooltip="{{ 'clear_schedule' | translate }}">
+            <!--автопланирование-->
+            <img src="img/play.png" ng-hide="played" ng-click='play()' class="icon" tooltip-placement="bottom" tooltip="{{ 'clear_schedule' | translate }}">
+            <img src="img/play-gray.png" ng-show="played" class="icon" tooltip-placement="bottom" tooltip="{{ 'clear_schedule' | translate }}">
+            <!--автопланирование на все дс-->
+            <img src="img/play-all.png" ng-hide="played" ng-click='play()' class="icon" tooltip-placement="bottom" tooltip="{{ 'clear_schedule' | translate }}">
+            <img src="img/play-all-gray.png" ng-show="played" class="icon" tooltip-placement="bottom" tooltip="{{ 'clear_schedule' | translate }}">
+        </div>
+
+        <!--Date picker-->
+        <div ng-controller="DatePickerCtrl" class="col-sm-3">
+            <div class="input-group-btn">
+                <button class="btn select-date" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+            </div>
+            <input type="text"
+                   ng-change="select()"
+                   disabled="disabled"
+                   datepicker-popup="{{format}}"
+                   ng-model="dt"
+                   is-open="opened"
+                   current-text="{{ 'today' | translate }}"
+                   datepicker-options="dateOptions"
+                   show-button-bar="true"
+                   close-text="{{ 'close' | translate }}" />
+        </div>
+
+        <!--Area control-->
+        <div ng-controller="AreaCtrl" class="col-sm-2">
+            <select ng-model="aoc" ng-options="a.name for a in aocs" ng-change="change()"></select>
+        </div>
+    </div>
+    <!--Info Panel-->
+    <div id="info-panel" class="row">
+        <div id="kpi-panel"></div>
+        <div id="order-filter-panel"></div>
+    </div>
+    <div id="center-panel" class="row">
+        <div id="schedule-map-panel">
+            <div id="schedule-panel" ng-controller="SchedulePanelCtrl" class="row" fixed-scroll>
+                <div id="vehicle-toolbar" class="toolbar"></div>
+                <div id="timeline" class="toolbar"></div>
+                <div ng-repeat='vs in vss' class="vehicle-schedule row">
+                    <div ng-controller="VehicleCtrl" class="vehicle" vehicle ng-style="style"></div>
+                    <div class="vehicle-shadow"></div>
+                    <div ng-controller="ScheduleCtrl" class="schedule">
+                        <div ng-repeat='run in vs.schedule.runs' class="run"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div id="map-panel" class="row"></div>
+        </div>
+        <div id="orders-panel" ng-controller="UnplannedOrdersCtrl">
+            <div id="order-toolbar" class="toolbar"></div>
+            <div infinite-scroll
+                 infinite-scroll-down="scrollDown()"
+                 alert-height='1000'>
+                <div ng-repeat='order in orders' unplanned-order id="order-{{ order.id }}" order="order" class="order unplanned" ng-click="selectOrder(order)" draggable="true"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="i18n/ct-locale_en.js"></script>
+<script src="i18n/ct-locale_ru.js"></script>
+<script src="lib/jquery/jquery-2.1.0.js"></script>
+<script src="lib/angular/angular.js"></script>
+<script src="lib/angular/angular-resource.js"></script>
+<script src="lib/angular/angular-cookies.js"></script>
+<script src="lib/angular/translate/angular-translate.js"></script>
+<script src="lib/angular/ui/ui-bootstrap-tpls-0.10.0.js"></script>
+<script src="scripts/ct.js"></script>
+<script src="scripts/services/services.js"></script>
+<script src="scripts/controllers/controllers.js"></script>
+<script src="scripts/filters/filters.js"></script>
+<script src="scripts/directives/directives.js"></script>
+<script src="scripts/templates/templates.js"></script>
+
+</body>
+</html>
