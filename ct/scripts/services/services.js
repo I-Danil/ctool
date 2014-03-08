@@ -54,7 +54,7 @@ angular.module('ct.services', ['ngResource', 'ngCookies'], function () {
             }).list(function (data) {
                     orders = data;
                     callback(data);
-                },function (data) {
+                }, function (data) {
                     console.log("error")
                 })
         };
@@ -68,8 +68,9 @@ angular.module('ct.services', ['ngResource', 'ngCookies'], function () {
                 list: {method: 'JSONP', isArray: true}
             }).list(function (data) {
                     callback(data);
-                },function (data) {
-                    console.log("error")
+                }, function () {
+                    callback([]);
+                    console.log("error while loading schedule data")
                 })
         };
         return {

@@ -82,21 +82,6 @@ angular.module('ct.controllers', [], function () {
             alert(order)
         };
     }])
-//    .controller('SchedulePanelCtrl', ['$scope', 'ScheduleService', function ($scope, ScheduleService) {
-//        $scope.style = {left: 0};
-//        ScheduleService.list(function (vss) {
-//            $scope.vss = vss;
-//        });
-//    }])
-    .controller('VehicleCtrl', ['$scope', 'VehicleService', function ($scope, VehicleService) {
-        VehicleService.list(function (vss) {
-            $scope.vehicles = vss;
-        });
-
-        $scope.nameClick = function (v) {
-            console.log(v.name)
-        };
-    }])
     .controller('ScheduleCtrl', ['$scope', 'ScheduleService', function ($scope, ScheduleService) {
         var minTime, maxTime;
 
@@ -119,4 +104,16 @@ angular.module('ct.controllers', [], function () {
             };
         };
         $scope.zoomChange(4);
+
+        ScheduleService.list(function (values) {
+            var vehicles = [];
+            var schedules = [];
+            for (var i = 0; i < values.length; i++) {
+                var obj = values[i];
+                vehicles.push(obj.vehicle);
+                schedules.push(obj.schedule);
+            }
+            $scope.vehicles = vehicles;
+            $scope.schedules = schedules;
+        });
     }]);

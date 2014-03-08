@@ -25,15 +25,15 @@ angular.module('ct.directives', [])
                         spacing_closed: 0
                     },
                     center: {
-                        paneClass: "schedule-order-pane",
-                        paneSelector: "#schedule-order-panel"
+                        paneClass: "plan-pane",
+                        paneSelector: "#plan-panel"
                     }
                 });
             }
         };
     }
     ])
-    .directive('scheduleOrderLayout', [function () {
+    .directive('planLayout', [function () {
         return {
             link: function (scope, elem, attrs) {
                 elem.layout({
@@ -49,15 +49,15 @@ angular.module('ct.directives', [])
                         togglerClass: "orders-toggler"
                     },
                     center: {
-                        paneSelector: "#schedule-panel",
-                        paneClass: "schedule-pane"
+                        paneSelector: "#resource-panel",
+                        paneClass: "resource-pane"
                     }
                 });
             }
         };
     }
     ])
-    .directive('scheduleLayout', [function () {
+    .directive('resourceLayout', [function () {
         return {
             link: function (scope, elem, attrs) {
                 elem.layout({
@@ -80,8 +80,8 @@ angular.module('ct.directives', [])
                         spacing_closed: 0
                     },
                     center: {
-                        paneSelector: "#time-line-panel",
-                        paneClass: "time-line-pane"
+                        paneSelector: "#schedule-panel",
+                        paneClass: "schedule-pane"
                     },
                     south: {
                         size: 0.4,
@@ -90,6 +90,58 @@ angular.module('ct.directives', [])
                         paneSelector: "#map-panel",
                         paneClass: "map-pane",
                         togglerClass: "map-toggler"
+                    }
+                });
+            }
+        };
+    }
+    ])
+    .directive('scheduleLayout', [function () {
+        return {
+            link: function (scope, elem, attrs) {
+                elem.layout({
+                    closable: false,
+                    resizable: false,
+                    slidable: false,
+                    applyDefaultStyles: false,
+                    north: {
+                        size: 25,
+                        paneClass: "timescale-pane",
+                        paneSelector: "#timescale-panel",
+                        togglerClass: "timescale-toggler",
+                        resizerClass: "timescale-resizer",
+                        spacing_open: 0,
+                        spacing_closed: 0
+                    },
+                    center: {
+                        paneClass: "time-line-pane",
+                        paneSelector: "#time-line-panel"
+                    }
+                });
+            }
+        };
+    }
+    ])
+    .directive('vehicleLayout', [function () {
+        return {
+            link: function (scope, elem, attrs) {
+                elem.layout({
+                    closable: false,
+                    resizable: false,
+                    slidable: false,
+                    applyDefaultStyles: false,
+                    north: {
+                        size: 25,
+                        paneClass: "vehicle-toolbar-pane",
+                        paneSelector: "#vehicle-toolbar-panel",
+                        togglerClass: "vehicle-toolbar-toggler",
+                        resizerClass: "vehicle-toolbar-resizer",
+                        spacing_open: 0,
+                        spacing_closed: 0
+                    },
+                    center: {
+                        paneClass: "vehicle-card-pane",
+                        paneSelector: "#vehicle-card-panel"
                     }
                 });
             }
@@ -254,6 +306,30 @@ angular.module('ct.directives', [])
                             }
                         }
                     };
+                }
+            };
+        }
+    ])
+    .directive('scrollSynchronize', [function () {
+            return {
+                link: function (scope, elem, attrs) {
+                    var timeLinePanel = elem.find("#time-line-panel");
+                    var vehiclePanel = elem.find("#vehicle-card-panel");
+                    var timescalePanel = elem.find("#timescale-panel");
+                    var previousScrollTop = 0;
+                    var handler = function () {
+                        var scrollTop = timeLinePanel.scrollTop();
+                        if (scrollTop == previousScrollTop) {
+                            timescalePanel.scrollLeft(timeLinePanel.scrollLeft());
+                        } else {
+                            vehiclePanel.scrollTop(scrollTop);
+                            previousScrollTop = scrollTop;
+                        }
+                    };
+                    timeLinePanel.on('scroll', handler);
+                    scope.$on('$destroy', function () {
+                        return timeLinePanel.off('scroll', handler);
+                    });
                 }
             };
         }

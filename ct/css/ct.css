@@ -17,28 +17,14 @@ html, body {
     border-bottom: 1px solid #BBB;
 }
 
-#schedule-order-panel {
+#plan-panel {
     height: 100%;
 }
 
-#schedule-panel {
+#resource-panel {
     border: none;
     overflow: auto;
     height: 100%;
-}
-
-#time-line-panel {
-    overflow: auto;
-}
-
-/* VEHICLE PANEL */
-#vehicle-panel {
-    border-right: 1px solid #BBB;
-}
-
-#vehicle-toolbar {
-    height: 25px;
-    border-bottom: 1px solid #BBB;
 }
 
 #map-panel {
@@ -84,21 +70,20 @@ html, body {
 
 /* TIMESCALE */
 
-#timescale {
-    height: 25px;
-    width: auto;
+#timescale-panel {
+    overflow: hidden;
 }
 
-#timescale #timescale_date_content {
+#timescale-panel #timescale_date_content {
     height: 12px;
     border-bottom: 1px solid #999999;
 }
 
-#timescale #timescale_content {
+#timescale-panel #timescale_content {
     height: 12px;
 }
 
-#timescale .timescale_value {
+#timescale-panel .timescale_value {
     font: 10px Arial;
     float: left;
     border-left: 1px solid black;
@@ -106,14 +91,14 @@ html, body {
     height: 12px;
 }
 
-#timescale .timescale_minutes {
+#timescale-panel .timescale_minutes {
     font: 8px Arial;
     letter-spacing: 1px;
     padding-left: 1px;
     vertical-align: top;
 }
 
-#timescale .timescale_date {
+#timescale-panel .timescale_date {
     height: 100%;
     float: left;
     color: #000000;
@@ -161,194 +146,45 @@ html, body {
     cursor: not-allowed;
 }
 
-.vehicle {
+/* VEHICLE PANEL */
+#vehicle-panel {
+    border-right: 1px solid #BBB;
+    height: 100%;
+}
+
+#vehicle-card-panel {
+    height: 100%;
+    overflow-y: hidden;
+    overflow-x: scroll;
+}
+
+#vehicle-toolbar-panel {
+    /*border-bottom: 1px solid #BBB;*/
+}
+
+#vehicle-panel .vehicle {
     height: 64px;
-    width: 250px;
+    margin-bottom: 1px;
     background-color: powderblue;
 }
 
-.vehicle-shadow {
-    height: 64px;
-    float: left;
-    width: 250px;
-}
-
-.schedule {
-    height: 64px;
-    float: left;
-    background-color: beige;
-    width: 500px;
-}
-
-.vehicle-schedule {
-    height: 65px;
-    width: 5000px;
-}
-
-/*#ct .col-sm-2 {*/
-/*padding: 0;*/
-/*}*/
-
-/*#ct .row {*/
-/*margin: 0;*/
-/*}*/
-
-/* INFO PANEL */
-
-/*#info-panel {*/
-/*height: 25px;*/
-/*}*/
-
-/*#order-filter-panel {*/
-/*height: 100%;*/
-/*width: 250px;*/
-/*float: left;*/
-/*border-bottom: 1px solid;*/
-/*}*/
-
-/* TOOLBAR PANEL */
-/*.toolbar {*/
-/*height: 25px;*/
-/*}*/
-
-/*#vehicle-toolbar {*/
-/*width: 250px;*/
-/*float: left;*/
-/*border-right: 1px solid;*/
-/*}*/
-
-/*#timeline {*/
-/*border-right: 1px solid;*/
-/*width: -moz-calc(100% - 500px);*/
-/*width: -webkit-calc(100% - 500px);*/
-/*width: calc(100% - 500px);*/
-/*}*/
-
-/*#order-toolbar {*/
-/*width: 250px;*/
-/*float: left;*/
-/*}*/
-
 /* SCHEDULE PANEL */
+#schedule-panel {
+    height: 100%;
+}
 
-/*#center-panel {*/
-/*height: -moz-calc(100% - 50px);*/
-/*height: -webkit-calc(100% - 50px);*/
-/*height: calc(100% - 50px);*/
-/*}*/
+#time-line-panel {
+    overflow: auto;
+}
 
-/*#schedule-map-panel {*/
-/*height: 100%;*/
-/*width: -moz-calc(100% - 250px);*/
-/*width: -webkit-calc(100% - 250px);*/
-/*width: calc(100% - 250px);*/
-/*float: left;*/
-/*}*/
+#time-line-panel .time-line {
+    height: 64px;
+    width: 2000px;
+    float: left;
+    margin-bottom: 1px;
+    background-color: beige;
+}
 
-/*#schedule-panel {*/
-/*height: 50%;*/
-/*width: 100%;*/
-/*border: solid black 1px;*/
-/*overflow: auto;*/
-/*position: relative;*/
-/*}*/
-
-/* MAP PANEL */
-
-/*#map-panel {*/
-/*height: 50%;*/
-/*border: solid black 1px;*/
-/*margin: 0;*/
-/*}*/
-
-/* ACTIONS PANEL */
-/*#actions-panel {*/
-/*height: 25px;*/
-/*border-bottom: 1px solid;*/
-/*}*/
-
-/*#actions-panel .icon {*/
-/*margin: 2px 4px;*/
-/*float: left;*/
-/*}*/
-
-/*#actions-panel .icon:hover {*/
-/*cursor: pointer;*/
-/*}*/
-
-/*#actions-panel input {*/
-/*border: none;*/
-/*width: 220px;*/
-/*float: left;*/
-/*outline-color: #ffffff;*/
-/*background-color: #ffffff;*/
-/*}*/
-
-/*#actions-panel .input-group-btn {*/
-/*float: left;*/
-/*width: 20px;*/
-/*}*/
-
-/*#actions-panel .select-date {*/
-/*padding: 0;*/
-/*background-color: #fff;*/
-/*outline-color: #ffffff;*/
-/*}*/
-
-/*#actions-panel select {*/
-/*width: 200px;*/
-/*margin: 1px;*/
-/*}*/
-
-/* ORDERS PANEL */
-
-/*#orders-panel {*/
-/*height: 100%;*/
-/*overflow: auto;*/
-/*width: 250px;*/
-/*}*/
-
-/*#orders-panel .order {*/
-/*width: 100%;*/
-/*height: 50px;*/
-/*margin: 1px;*/
-/*background-color: #46b8da;*/
-/*}*/
-
-/*.vehicle {*/
-/*height: 64px;*/
-/*float: left;*/
-/*position: absolute;*/
-/*width: 250px;*/
-/*background-color: powderblue;*/
-/*}*/
-
-/*.vehicle-shadow {*/
-/*height: 64px;*/
-/*float: left;*/
-/*width: 250px;*/
-/*}*/
-
-/*.schedule {*/
-/*height: 64px;*/
-/*float: left;*/
-/*background-color: beige;*/
-/*}*/
-
-/*.vehicle-schedule {*/
-/*width: 3000px;*/
-/*height: 65px;*/
-/*border-bottom: 1px solid #000000;*/
-/*background-color: gainsboro;*/
-/*width: auto;*/
-/*}*/
-/*.run {*/
-/*width: 300px;*/
-/*height: 100%;*/
-/*float: left;*/
-/*border-right: 1px solid #000000;*/
-/*border-left: 1px solid #000000;*/
-/*}*/
 
 
 
