@@ -20,7 +20,7 @@
                     <div ng-class="{'zoom-step': true, active: zoom == 4}" ng-click='zoomChange(4)'>4h</div>
                     <div ng-class="{'zoom-step': true, active: zoom == 12}" ng-click='zoomChange(12)'>12h</div>
                     <div ng-class="{'zoom-step': true, active: zoom == 24}" ng-click='zoomChange(24)'>1d</div>
-                    <div ng-class="{'zoom-step': true, active: zoom == 48, inactive: maxZoom < 48}"
+                    <div ng-class="{'zoom-step': true, active: zoom == 48, inactive: hoursInSchedule < 48}"
                          ng-click='zoomChange(48)'>2d
                     </div>
                 </div>
@@ -32,9 +32,9 @@
                 </div>
             </div>
             <div id="schedule-panel" schedule-layout>
-                <div id="timescale-panel" timescale></div>
+                <div id="timescale-panel" timescale min-time="{{minScheduleTime}}" max-time="{{maxScheduleTime}}" zoom="{{zoom}}"></div>
                 <div id="time-line-panel">
-                    <div ng-repeat='schedule in schedules' class="time-line"></div>
+                    <div ng-repeat='vehicle in vehicles' class="time-line"></div>
                 </div>
             </div>
             <div id="map-panel"></div>

@@ -83,37 +83,16 @@ angular.module('ct.controllers', [], function () {
         };
     }])
     .controller('ScheduleCtrl', ['$scope', 'ScheduleService', function ($scope, ScheduleService) {
-        var minTime, maxTime;
-
-        var calculateScheduleBounds = function(min, max) {
-            minTime = min - ((min / DateTimeConstant.MILLISECONDS_IN_HOUR) % 24) * DateTimeConstant.MILLISECONDS_IN_HOUR;
-            var fullHours = (24 - ((max / DateTimeConstant.MILLISECONDS_IN_HOUR) % 24));
-            fullHours = fullHours == 24 ? 0 : fullHours;
-            maxTime = max + fullHours * DateTimeConstant.MILLISECONDS_IN_HOUR;
-            $scope.maxZoom = (maxTime - minTime) / DateTimeConstant.MILLISECONDS_IN_HOUR;
-        };
-        calculateScheduleBounds(1396569600000, 1396569600000 + DateTimeConstant.MILLISECONDS_IN_DAY + DateTimeConstant.MILLISECONDS_IN_DAY);
+        ScheduleService.list(function (values) {
+            $scope.vehicles = values;
+            $scope.minScheduleTime = ScheduleService.getScheduleBounds().minTime;
+            $scope.maxScheduleTime = ScheduleService.getScheduleBounds().maxTime;
+            $scope.hoursInSchedule = ScheduleService.getHoursInSchedule();
+            $scope.zoom = 4;
+        });
 
         $scope.zoomChange = function(zoom) {
-            if (zoom > $scope.maxZoom || zoom == $scope.zoom) return;
+            if (zoom > $scope.hoursInSchedule || zoom == $scope.zoom) return;
             $scope.zoom = zoom;
-            $scope.timescale = {
-                zoom: zoom,
-                minTime: minTime,
-                maxTime: maxTime
-            };
         };
-        $scope.zoomChange(4);
-
-        ScheduleService.list(function (values) {
-            var vehicles = [];
-            var schedules = [];
-            for (var i = 0; i < values.length; i++) {
-                var obj = values[i];
-                vehicles.push(obj.vehicle);
-                schedules.push(obj.schedule);
-            }
-            $scope.vehicles = vehicles;
-            $scope.schedules = schedules;
-        });
     }]);

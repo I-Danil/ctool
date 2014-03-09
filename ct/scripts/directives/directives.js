@@ -262,15 +262,16 @@ angular.module('ct.directives', [])
                         timescaleElement = elem.find('#timescale_content'),
                         timescaleDateElement = elem.find('#timescale_date_content');
 
-                    scope.$watch("timescale", function (value) {
-                        rescale(value.minTime, value.maxTime, value.zoom, elem.width());
+                    attrs.$observe('zoom', function (zoom) {
+                        if(!angular.isDefined(zoom)) return;
+                        rescale(parseInt(attrs.minTime), parseInt(attrs.maxTime), zoom, elem.width());
                     });
 
                     var hours, pxsPerHour, timescaleWidth, stepPx, days, dayStep, millsPerPx,
                         c, timescale_value, width, curDate, timescale_date;
-                    var rescale = function (minTime, maxTime, scale, visibleWidth) {
+                    var rescale = function (minTime, maxTime, zoom, visibleWidth) {
                         hours = (maxTime - minTime) / DateTimeConstant.MILLISECONDS_IN_HOUR;
-                        pxsPerHour = visibleWidth / scale;
+                        pxsPerHour = visibleWidth / zoom;
                         timescaleWidth = pxsPerHour * hours;
                         timescaleElement.html("");
                         timescaleDateElement.html("");
@@ -279,15 +280,15 @@ angular.module('ct.directives', [])
                         dayStart.setUTCHours(0, 0, 0, 0);
                         millsPerPx = DateTimeConstant.MILLISECONDS_IN_HOUR / pxsPerHour;
                         days = hours / 24;
-                        dayStep = scale / 2;
+                        dayStep = zoom / 2;
                         var hourStep = 1;
-                        if (scale == 24) {
+                        if (zoom == 24) {
                             hourStep = 2;
-                        } else if (scale == 48) {
+                        } else if (zoom == 48) {
                             hourStep = 4;
                         }
                         stepPx = (hourStep * DateTimeConstant.MILLISECONDS_IN_HOUR / millsPerPx);
-                        var dayPx = scale / hourStep * stepPx / 2;
+                        var dayPx = zoom / hourStep * stepPx / 2;
                         for (var x = 0; x < days; x++) {
                             for (var y = 0; y < 24; y++) {
                                 if (y % hourStep != 0) continue;
@@ -311,26 +312,26 @@ angular.module('ct.directives', [])
         }
     ])
     .directive('scrollSynchronize', [function () {
-            return {
-                link: function (scope, elem, attrs) {
-                    var timeLinePanel = elem.find("#time-line-panel");
-                    var vehiclePanel = elem.find("#vehicle-card-panel");
-                    var timescalePanel = elem.find("#timescale-panel");
-                    var previousScrollTop = 0;
-                    var handler = function () {
-                        var scrollTop = timeLinePanel.scrollTop();
-                        if (scrollTop == previousScrollTop) {
-                            timescalePanel.scrollLeft(timeLinePanel.scrollLeft());
-                        } else {
-                            vehiclePanel.scrollTop(scrollTop);
-                            previousScrollTop = scrollTop;
-                        }
-                    };
-                    timeLinePanel.on('scroll', handler);
-                    scope.$on('$destroy', function () {
-                        return timeLinePanel.off('scroll', handler);
-                    });
-                }
-            };
-        }
+        return {
+            link: function (scope, elem, attrs) {
+                var timeLinePanel = elem.find("#time-line-panel");
+                var vehiclePanel = elem.find("#vehicle-card-panel");
+                var timescalePanel = elem.find("#timescale-panel");
+                var previousScrollTop = 0;
+                var handler = function () {
+                    var scrollTop = timeLinePanel.scrollTop();
+                    if (scrollTop == previousScrollTop) {
+                        timescalePanel.scrollLeft(timeLinePanel.scrollLeft());
+                    } else {
+                        vehiclePanel.scrollTop(scrollTop);
+                        previousScrollTop = scrollTop;
+                    }
+                };
+                timeLinePanel.on('scroll', handler);
+                scope.$on('$destroy', function () {
+                    return timeLinePanel.off('scroll', handler);
+                });
+            }
+        };
+    }
     ]);

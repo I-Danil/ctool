@@ -63,17 +63,49 @@ angular.module('ct.services', ['ngResource', 'ngCookies'], function () {
         }
     }])
     .service('ScheduleService', ['$resource', function ($resource) {
+        var minTime, maxTime;
+
         var list = function (callback) {
             $resource('data/schedule.json', {}, {
                 list: {method: 'JSONP', isArray: true}
             }).list(function (data) {
+                    calculateScheduleBounds(data);
                     callback(data);
                 }, function () {
                     callback([]);
                     console.log("error while loading schedule data")
                 })
         };
+
+        var calculateScheduleBounds = function (vehicles) {
+            if (vehicles.length == 0) return;
+            var min = vehicles[0].workStartTime;
+            var max = vehicles[0].workEndTime;
+            for (var i = 0; i < vehicles.length; i++) {
+                var vehicle = vehicles[i];
+                min = Math.min(min, vehicle.workStartTime);
+                max = Math.max(max, vehicle.workEndTime);
+            }
+            minTime = min - ((min / DateTimeConstant.MILLISECONDS_IN_HOUR) % 24) * DateTimeConstant.MILLISECONDS_IN_HOUR;
+            var fullHours = (24 - ((max / DateTimeConstant.MILLISECONDS_IN_HOUR) % 24));
+            fullHours = fullHours == 24 ? 0 : fullHours;
+            maxTime = max + fullHours * DateTimeConstant.MILLISECONDS_IN_HOUR;
+        };
+
+        var getScheduleBounds = function () {
+            return {
+                minTime: minTime,
+                maxTime: maxTime
+            }
+        };
+
+        var getHoursInSchedule = function () {
+            return (maxTime - minTime) / DateTimeConstant.MILLISECONDS_IN_HOUR
+        };
+
         return {
-            list: list
+            list: list,
+            getScheduleBounds: getScheduleBounds,
+            getHoursInSchedule: getHoursInSchedule
         }
     }]);

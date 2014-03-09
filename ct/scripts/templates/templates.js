@@ -21,7 +21,7 @@ angular.module("ct.templates", []).run(["$templateCache", function ($templateCac
 
     $templateCache.put("vehicleTpl",
         "<span ng-click=\"nameClick(vs.vehicle)\">{{vehicle.name}}</span><br>" +
-            "<span>Runs-{{vs.schedule.runs.length}}</span>"
+            "<span>Runs-{{vehicle.schedule.runs.length}}</span>"
     );
 
     $templateCache.put("timescaleTpl",
