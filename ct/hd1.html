@@ -13,9 +13,10 @@
     <div id="actions-panel"></div>
     <div id="plan-panel" plan-layout>
         <div id="resource-panel" ng-controller="ScheduleCtrl" scroll-synchronize resource-layout>
-            <div id="kpi-panel" >
+            <div id="kpi-panel">
                 <div id="zoom">
                     <img src='img/zoom_icon.gif' class='zoom-icon'>
+
                     <div ng-class="{'zoom-step': true, active: zoom == 2}" ng-click='zoomChange(2)'>2h</div>
                     <div ng-class="{'zoom-step': true, active: zoom == 4}" ng-click='zoomChange(4)'>4h</div>
                     <div ng-class="{'zoom-step': true, active: zoom == 12}" ng-click='zoomChange(12)'>12h</div>
@@ -28,13 +29,33 @@
             <div id="vehicle-panel" vehicle-layout>
                 <div id="vehicle-toolbar-panel"></div>
                 <div id="vehicle-card-panel">
-                    <div ng-repeat='vehicle in vehicles' class="vehicle" vehicle></div>
+                    <div ng-repeat='vehicle in vehicles' class="vehicle" vehicle-card></div>
                 </div>
             </div>
             <div id="schedule-panel" schedule-layout>
-                <div id="timescale-panel" timescale min-time="{{minScheduleTime}}" max-time="{{maxScheduleTime}}" zoom="{{zoom}}"></div>
+                <div id="timescale-panel" timescale min-time="{{minScheduleTime}}" max-time="{{maxScheduleTime}}"
+                     zoom="{{zoom}}" set-mills-in-px="setMillsInPx(millsPerPx)"></div>
                 <div id="time-line-panel">
-                    <div ng-repeat='vehicle in vehicles' class="time-line"></div>
+                    <div ng-repeat='vehicle in vehicles' class="time-line" time-resizer start-at="{{minScheduleTime}}" end-at="{{maxScheduleTime}}" mills-in-px="{{millsInPx}}">
+                        <div class="off-duty" time-resizer start-at="{{minScheduleTime}}" end-at="{{vehicle.workStartTime}}" mills-in-px="{{millsInPx}}"></div>
+
+                        <div ng-if="vehicle.schedule.runs.length == 0">
+                            <div class="off-duty available" time-resizer start-at="{{vehicle.workStartTime}}" end-at="{{vehicle.workEndTime}}" mills-in-px="{{millsInPx}}"></div>
+                        </div>
+
+                        <!--<div ng-repeat='run in vehicle.schedule.runs'>-->
+                            <!--<div ng-if="run.loadingStartTime > vehicle.workStartTime">-->
+                                <!--<div class="off-duty available" time-resizer start-at="{{vehicle.workStartTime}}" end-at="{{vehicle.workEndTime}}" mills-in-px="{{millsInPx}}"></div>-->
+                            <!--</div>-->
+                            <!--<div class="run">-->
+                                <!--<div class="header" start-at="{{run.loadingStartTime}}" end-at="{{run.loadingEndTime}}"></div>-->
+                                <!--<div class="container" start-at="{{run.loadingEndTime}}" end-at="{{run.returnStartTime}}"></div>-->
+                                <!--<div class="footer" start-at="{{run.returnStartTime}}" end-at="{{run.returnEndTime}}"></div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <div class="off-duty" time-resizer start-at="{{vehicle.workEndTime}}" end-at="{{maxScheduleTime}}" mills-in-px="{{millsInPx}}"></div>
+                    </div>
                 </div>
             </div>
             <div id="map-panel"></div>

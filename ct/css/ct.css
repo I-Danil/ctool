@@ -179,10 +179,23 @@ html, body {
 
 #time-line-panel .time-line {
     height: 64px;
-    width: 2000px;
     float: left;
     margin-bottom: 1px;
     background-color: beige;
+}
+
+#time-line-panel .off-duty {
+    height: 64px;
+    float: left;
+    background-color: green;
+    margin-bottom: 1px;
+}
+
+#time-line-panel .off-duty.available {
+    height: 64px;
+    float: left;
+    background-color: #ffffff;
+    margin-bottom: 1px;
 }
 
 

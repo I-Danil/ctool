@@ -1,181 +1,91 @@
 angular.callbacks._0([{
 "id":"0",
 "name":"vehicle0",
-"workStartTime":"1396569600000",
-"workEndTime":"1396656000000",
+"workStartTime":"1396584000000",
+"workEndTime":"1396634400000",
 "schedule": {
-"runs": [{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-}]
+"runs": []
 }
 },
 {
 "id":"1",
 "name":"vehicle1",
-"workStartTime":"1396569600000",
-"workEndTime":"1396656000000",
+"workStartTime":"1396584000000",
+"workEndTime":"1396634400000",
 "schedule": {
-"runs": [{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-}]
+"runs": []
 }
 },
 {
 "id":"2",
 "name":"vehicle2",
-"workStartTime":"1396569600000",
-"workEndTime":"1396656000000",
+"workStartTime":"1396584000000",
+"workEndTime":"1396634400000",
 "schedule": {
-"runs": [{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-}]
+"runs": []
 }
 },
 {
 "id":"3",
 "name":"vehicle3",
-"workStartTime":"1396569600000",
-"workEndTime":"1396656000000",
+"workStartTime":"1396584000000",
+"workEndTime":"1396634400000",
 "schedule": {
-"runs": [{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-}]
+"runs": []
 }
 },
 {
 "id":"4",
 "name":"vehicle4",
-"workStartTime":"1396569600000",
-"workEndTime":"1396656000000",
+"workStartTime":"1396584000000",
+"workEndTime":"1396634400000",
 "schedule": {
-"runs": [{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-}]
+"runs": []
 }
 },
 {
 "id":"5",
 "name":"vehicle5",
-"workStartTime":"1396569600000",
-"workEndTime":"1396656000000",
+"workStartTime":"1396584000000",
+"workEndTime":"1396634400000",
 "schedule": {
-"runs": [{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-}]
+"runs": []
 }
 },
 {
 "id":"6",
 "name":"vehicle6",
-"workStartTime":"1396569600000",
-"workEndTime":"1396656000000",
+"workStartTime":"1396584000000",
+"workEndTime":"1396634400000",
 "schedule": {
-"runs": [{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-}]
+"runs": []
 }
 },
 {
 "id":"7",
 "name":"vehicle7",
-"workStartTime":"1396569600000",
-"workEndTime":"1396656000000",
+"workStartTime":"1396584000000",
+"workEndTime":"1396634400000",
 "schedule": {
-"runs": [{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-}]
+"runs": []
 }
 },
 {
 "id":"8",
 "name":"vehicle8",
-"workStartTime":"1396569600000",
-"workEndTime":"1396656000000",
+"workStartTime":"1396584000000",
+"workEndTime":"1396634400000",
 "schedule": {
-"runs": [{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-}]
+"runs": []
 }
 },
 {
 "id":"9",
 "name":"vehicle9",
-"workStartTime":"1396569600000",
-"workEndTime":"1396656000000",
+"workStartTime":"1396584000000",
+"workEndTime":"1396634400000",
 "schedule": {
-"runs": [{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-},{
-"loadingStart":"1395705600000",
-"loadingEnd":"1395723600000"
-}]
+"runs": []
 }
 },
 ]);

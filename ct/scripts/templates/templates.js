@@ -19,7 +19,7 @@ angular.module("ct.templates", []).run(["$templateCache", function ($templateCac
         "<span>{{order.name}}</span>"
     );
 
-    $templateCache.put("vehicleTpl",
+    $templateCache.put("vehicleCardTpl",
         "<span ng-click=\"nameClick(vs.vehicle)\">{{vehicle.name}}</span><br>" +
             "<span>Runs-{{vehicle.schedule.runs.length}}</span>"
     );

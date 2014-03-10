@@ -223,49 +223,27 @@ angular.module('ct.directives', [])
             };
         }
     ])
-    .directive('fixedScroll', [
+    .directive('vehicleCard', [
         '$rootScope', '$templateCache', function ($rootScope, $templateCache) {
             return {
-                link: function (scope, elem, attrs) {
-                    var previousScroll = 0;
-                    var children = elem.find(".vehicle");
-                    var handler = function () {
-                        var scrollLeft = elem.scrollLeft();
-                        if (scrollLeft == previousScroll) return;
-                        previousScroll = scrollLeft;
-                        scope.style = {left: scrollLeft};
-                        scope.$digest();
-                    };
-                    elem.on('scroll', handler);
-                    scope.$on('$destroy', function () {
-                        return elem.off('scroll', handler);
-                    });
-                }
-            };
-        }
-    ])
-    .directive('vehicle', [
-        '$rootScope', '$templateCache', function ($rootScope, $templateCache) {
-            return {
-                template: $templateCache.get('vehicleTpl'),
+                template: $templateCache.get('vehicleCardTpl'),
                 link: function (scope, elem, attrs) {
                 }
             };
         }
     ])
     .directive('timescale', [
-        '$rootScope', '$templateCache', '$filter', function ($rootScope, $templateCache, $filter) {
+        '$rootScope', '$templateCache', '$filter', '$timeout', function ($rootScope, $templateCache, $filter, $timeout) {
             return {
+                scope: {
+                    setMillsInPx: '&'
+                },
                 template: $templateCache.get('timescaleTpl'),
                 link: function (scope, elem, attrs) {
                     var dayStart = new Date(),
+                        min, max, elemWidth,
                         timescaleElement = elem.find('#timescale_content'),
                         timescaleDateElement = elem.find('#timescale_date_content');
-
-                    attrs.$observe('zoom', function (zoom) {
-                        if(!angular.isDefined(zoom)) return;
-                        rescale(parseInt(attrs.minTime), parseInt(attrs.maxTime), zoom, elem.width());
-                    });
 
                     var hours, pxsPerHour, timescaleWidth, stepPx, days, dayStep, millsPerPx,
                         c, timescale_value, width, curDate, timescale_date;
@@ -305,8 +283,17 @@ angular.module('ct.directives', [])
                                 }
                                 $("<div class='timescale_date' style='width:" + dayPx + "px;" + style + "'>" + $filter('date')(curDate, "dd MMMM (EEE)") + "</div>").appendTo(timescaleDateElement);
                             }
+                            scope.setMillsInPx({millsPerPx: millsPerPx});
                         }
                     };
+                    $timeout(function () {
+                        elemWidth = elem.width();
+                        attrs.$observe('zoom', function (zoom) {
+                            min = parseInt(attrs.minTime);
+                            max = parseInt(attrs.maxTime);
+                            rescale(min, max, parseInt(zoom), elemWidth);
+                        });
+                    }, 0, false)
                 }
             };
         }
@@ -330,6 +317,19 @@ angular.module('ct.directives', [])
                 timeLinePanel.on('scroll', handler);
                 scope.$on('$destroy', function () {
                     return timeLinePanel.off('scroll', handler);
+                });
+            }
+        };
+    }
+    ])
+    .directive('timeResizer', [function () {
+        return {
+            link: function (scope, elem, attrs) {
+                var startAt = parseInt(attrs.startAt),
+                    endAt = parseInt(attrs.endAt),
+                    millsInPx = parseInt(attrs.millsInPx);
+                attrs.$observe('millsInPx', function (millsInPx) {
+                    elem.width((endAt - startAt) / millsInPx);
                 });
             }
         };

@@ -95,4 +95,8 @@ angular.module('ct.controllers', [], function () {
             if (zoom > $scope.hoursInSchedule || zoom == $scope.zoom) return;
             $scope.zoom = zoom;
         };
+
+        $scope.setMillsInPx = function(millsInPx) {
+            $scope.millsInPx = millsInPx;
+        }
     }]);
