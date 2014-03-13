@@ -322,15 +322,47 @@ angular.module('ct.directives', [])
         };
     }
     ])
-    .directive('timeResizer', [function () {
+    .directive('timeline', ['$timeout', function ($timeout) {
         return {
+            scope: {
+                schedule: '='
+            },
             link: function (scope, elem, attrs) {
-                var startAt = parseInt(attrs.startAt),
-                    endAt = parseInt(attrs.endAt),
-                    millsInPx = parseInt(attrs.millsInPx);
-                attrs.$observe('millsInPx', function (millsInPx) {
-                    elem.width((endAt - startAt) / millsInPx);
-                });
+//                var startAt = parseInt(attrs.startAt),
+//                    endAt = parseInt(attrs.endAt),
+//                    millsInPx = parseInt(attrs.millsInPx);
+
+//                var resizeRun = function(runEl, runMl) {
+//                    var header = runEl.children(":first");
+//                    var headerWidth = (runMl.loadingEndTime - runMl.loadingStartTime) / millsInPx;
+//                    if (headerWidth < 2) {
+//                        header.hide();
+//                    } else {
+//                        header.width(headerWidth - 1);
+//                    }
+//
+//                    var footer = runEl.children(":last");
+//                    var footerWidth = (runMl.returnEndTime - runMl.returnStartTime) / millsInPx;
+//                    if (footerWidth < 2) {
+//                        footer.hide();
+//                    } else {
+//                        footer.width(footerWidth - 1);
+//                    }
+//
+//
+//                };
+//
+//                $timeout(function () {
+//                    var runs = elem.children();
+//                    for (var i = 0; i < runs.length; i++) {
+//                        var run = runs[i];
+//
+//                    }
+//                    attrs.$observe('millsInPx', function (mills) {
+//                        millsInPx = mills;
+//                    });
+//                }, 0, false)
+
             }
         };
     }

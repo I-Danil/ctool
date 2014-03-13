@@ -198,6 +198,34 @@ html, body {
     margin-bottom: 1px;
 }
 
+#time-line-panel .run {
+    height: 64px;
+    float: left;
+    background-color: mediumslateblue;
+    margin-bottom: 1px;
+}
+
+#time-line-panel .run .header {
+    height: 64px;
+    float: left;
+    background-color: #a6e1ec;
+    margin-bottom: 1px;
+}
+
+#time-line-panel .run .order {
+    height: 64px;
+    float: left;
+    background-color: #BBBBBB;
+    margin-bottom: 1px;
+}
+
+#time-line-panel .run .footer {
+    height: 64px;
+    float: left;
+    background-color: #a6e1ec;
+    margin-bottom: 1px;
+}
+
 
 
 
