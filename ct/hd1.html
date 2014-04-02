@@ -33,22 +33,31 @@
                 </div>
             </div>
             <div id="schedule-panel" schedule-layout>
-                <div id="timescale-panel" timescale min-time="{{minScheduleTime}}" max-time="{{maxScheduleTime}}"
-                     zoom="{{zoom}}" set-mills-in-px="setMillsInPx(millsPerPx)"></div>
+                <div id="timescale-panel">
+                    <div id="timescale" ng-if="zoom" timescale min-time="{{minScheduleTime}}"
+                         max-time="{{maxScheduleTime}}"
+                         zoom="zoom" set-mills-in-px="setMillsInPx(millsPerPx)"></div>
+                </div>
                 <div id="time-line-panel">
-                    <div ng-repeat='vehicle in vehicles' schedule="vehicle.schedule" class="time-line" timeline ng-style="{width: (maxScheduleTime - minScheduleTime) / millsInPx}" mills-in-px="{{millsInPx}}">
-                        <div ng-repeat='run in vehicle.schedule.runs' class="run" ng-style="{width: (run.returnEndTime - run.loadingStartTime) / millsInPx}">
-                            <div class="header" ng-style="{width: (run.loadingEndTime - run.loadingStartTime) / millsInPx}"></div>
-                            <div ng-repeat='order in run.orders' class="order" ng-style="{width: (order.endTime - order.startTime) / millsInPx}"></div>
-                            <div class="footer" ng-style="{width: (run.returnEndTime - run.returnStartTime) / millsInPx}"></div>
+                    <div id="time-line-list" ng-if="vehicles">
+                        <div ng-repeat='vehicle in vehicles' class="time-line" timeline>
+                            <div class='off-duty'></div>
+                            <div ng-repeat-start='run in vehicle.schedule.runs' class="spreader"></div>
+                            <div ng-repeat-end class="run" run></div>
+                            <div class='spreader'></div>
+                            <div class='off-duty'></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div id="map-panel"></div>
         </div>
-        <div id="orders-panel">
-        </div>
+        <div id="orders-panel" ng-controller="UnplannedOrdersCtrl">
+            <div infinite-scroll
+                 infinite-scroll-down="scrollDown()"
+                 alert-height='1000'>
+                <div ng-repeat='order in orders' unplanned-order id="order-{{ order.id }}" class="order" ng-click="selectOrder(order)" draggable="true"></div>
+            </div>
     </div>
 </div>
 

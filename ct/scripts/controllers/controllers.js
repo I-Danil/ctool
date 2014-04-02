@@ -84,11 +84,11 @@ angular.module('ct.controllers', [], function () {
     }])
     .controller('ScheduleCtrl', ['$scope', 'ScheduleService', function ($scope, ScheduleService) {
         ScheduleService.list(function (values) {
+            $scope.zoom = 4;
             $scope.vehicles = values;
             $scope.minScheduleTime = ScheduleService.getScheduleBounds().minTime;
             $scope.maxScheduleTime = ScheduleService.getScheduleBounds().maxTime;
             $scope.hoursInSchedule = ScheduleService.getHoursInSchedule();
-            $scope.zoom = 4;
         });
 
         $scope.zoomChange = function(zoom) {

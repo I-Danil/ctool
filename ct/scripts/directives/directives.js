@@ -9,7 +9,7 @@
 angular.module('ct.directives', [])
     .directive('ctLayout', [function () {
         return {
-            link: function (scope, elem, attrs) {
+            link: function (scope, elem) {
                 elem.layout({
                     closable: false,
                     resizable: false,
@@ -35,7 +35,7 @@ angular.module('ct.directives', [])
     ])
     .directive('planLayout', [function () {
         return {
-            link: function (scope, elem, attrs) {
+            link: function (scope, elem) {
                 elem.layout({
                     resizable: false,
                     slidable: false,
@@ -59,7 +59,7 @@ angular.module('ct.directives', [])
     ])
     .directive('resourceLayout', [function () {
         return {
-            link: function (scope, elem, attrs) {
+            link: function (scope, elem) {
                 elem.layout({
                     applyDefaultStyles: false,
                     togglerTip_open: "Close This Pane",
@@ -98,7 +98,7 @@ angular.module('ct.directives', [])
     ])
     .directive('scheduleLayout', [function () {
         return {
-            link: function (scope, elem, attrs) {
+            link: function (scope, elem) {
                 elem.layout({
                     closable: false,
                     resizable: false,
@@ -124,7 +124,7 @@ angular.module('ct.directives', [])
     ])
     .directive('vehicleLayout', [function () {
         return {
-            link: function (scope, elem, attrs) {
+            link: function (scope, elem) {
                 elem.layout({
                     closable: false,
                     resizable: false,
@@ -196,7 +196,7 @@ angular.module('ct.directives', [])
                     order: '='
                 },
                 template: $templateCache.get('unplannedOrderTpl'),
-                link: function (scope, elem, attrs) {
+                link: function (scope, elem) {
                     var el = elem[0];
 
                     var dragStart = function (ev) {
@@ -233,15 +233,17 @@ angular.module('ct.directives', [])
         }
     ])
     .directive('timescale', [
-        '$rootScope', '$templateCache', '$filter', '$timeout', function ($rootScope, $templateCache, $filter, $timeout) {
+        '$rootScope', '$templateCache', '$filter', function ($rootScope, $templateCache, $filter) {
             return {
                 scope: {
-                    setMillsInPx: '&'
+                    setMillsInPx: '&',
+                    zoom: '='
                 },
                 template: $templateCache.get('timescaleTpl'),
                 link: function (scope, elem, attrs) {
                     var dayStart = new Date(),
-                        min, max, elemWidth,
+                        min = parseInt(attrs.minTime),
+                        max = parseInt(attrs.maxTime),
                         timescaleElement = elem.find('#timescale_content'),
                         timescaleDateElement = elem.find('#timescale_date_content');
 
@@ -267,13 +269,15 @@ angular.module('ct.directives', [])
                         }
                         stepPx = (hourStep * DateTimeConstant.MILLISECONDS_IN_HOUR / millsPerPx);
                         var dayPx = zoom / hourStep * stepPx / 2;
+                        var timescaleValues = "";
+                        var timescaleDates = "";
                         for (var x = 0; x < days; x++) {
                             for (var y = 0; y < 24; y++) {
                                 if (y % hourStep != 0) continue;
                                 c = 255 - (y * 3);
-                                $("<div class='timescale_value' " +
+                                timescaleValues += "<div class='timescale_value' " +
                                     "style='width:" + stepPx + "px; color: rgb(0,0,0); background-color: rgb(" + c + "," + c + "," + c + ")'>" +
-                                    "&nbsp;" + y + "<span class='timescale_minutes'>00</span></div>").appendTo(timescaleElement);
+                                    "&nbsp;" + y + "<span class='timescale_minutes'>00</span></div>";
 
                                 if (y % dayStep != 0) continue;
                                 curDate = new Date(minTime + (new Date().getTimezoneOffset() * DateTimeConstant.MILLISECONDS_IN_MINUTE) + (((x * 24 ) + y) * DateTimeConstant.MILLISECONDS_IN_HOUR));
@@ -281,19 +285,20 @@ angular.module('ct.directives', [])
                                 if (y == 0) {
                                     style += "border-left:1px solid black";
                                 }
-                                $("<div class='timescale_date' style='width:" + dayPx + "px;" + style + "'>" + $filter('date')(curDate, "dd MMMM (EEE)") + "</div>").appendTo(timescaleDateElement);
+                                timescaleDates += "<div class='timescale_date' style='width:" + dayPx + "px;" + style + "'>" + $filter('date')(curDate, "dd MMMM (EEE)") + "</div>";
                             }
                             scope.setMillsInPx({millsPerPx: millsPerPx});
+                            $rootScope.calculateWidth = function (min, max) {
+                                return (max - min) / millsPerPx
+                            };
                         }
+                        timescaleElement.html(timescaleValues);
+                        timescaleDateElement.html(timescaleDates);
                     };
-                    $timeout(function () {
-                        elemWidth = elem.width();
-                        attrs.$observe('zoom', function (zoom) {
-                            min = parseInt(attrs.minTime);
-                            max = parseInt(attrs.maxTime);
-                            rescale(min, max, parseInt(zoom), elemWidth);
-                        });
-                    }, 0, false)
+
+                    scope.$watch('zoom', function () {
+                        rescale(min, max, scope.zoom, elem.width());
+                    });
                 }
             };
         }
@@ -322,47 +327,97 @@ angular.module('ct.directives', [])
         };
     }
     ])
-    .directive('timeline', ['$timeout', function ($timeout) {
+    .directive('timeline', ['$rootScope', function ($rootScope) {
         return {
-            scope: {
-                schedule: '='
-            },
             link: function (scope, elem, attrs) {
-//                var startAt = parseInt(attrs.startAt),
-//                    endAt = parseInt(attrs.endAt),
-//                    millsInPx = parseInt(attrs.millsInPx);
+                var workStartTime = scope.vehicle.workStartTime,
+                    workEndTime = scope.vehicle.workEndTime,
+                    runs = scope.vehicle.schedule.runs,
+                    runsEls = elem.children(".run");
+                var offDutyLeft = elem.children(":first");
+                var offDutyRight = elem.children(":last");
 
-//                var resizeRun = function(runEl, runMl) {
-//                    var header = runEl.children(":first");
-//                    var headerWidth = (runMl.loadingEndTime - runMl.loadingStartTime) / millsInPx;
-//                    if (headerWidth < 2) {
-//                        header.hide();
-//                    } else {
-//                        header.width(headerWidth - 1);
-//                    }
-//
-//                    var footer = runEl.children(":last");
-//                    var footerWidth = (runMl.returnEndTime - runMl.returnStartTime) / millsInPx;
-//                    if (footerWidth < 2) {
-//                        footer.hide();
-//                    } else {
-//                        footer.width(footerWidth - 1);
-//                    }
-//
-//
-//                };
-//
-//                $timeout(function () {
-//                    var runs = elem.children();
-//                    for (var i = 0; i < runs.length; i++) {
-//                        var run = runs[i];
-//
-//                    }
-//                    attrs.$observe('millsInPx', function (mills) {
-//                        millsInPx = mills;
-//                    });
-//                }, 0, false)
+                if (scope.vehicle.schedule.runs.length > 0) {
+                    workStartTime = Math.min(workStartTime, runs[0].loadingStartTime);
+                    workEndTime = Math.max(workEndTime, runs[runs.length - 1].returnEndTime);
+                }
+                scope.$watch('millsInPx', function () {
+                    var diff = 1;
+                    if (workStartTime < runs[0].loadingStartTime) {
+                        offDutyLeft.next().css({
+                            'width': $rootScope.calculateWidth(workStartTime, runs[0].loadingStartTime),
+                            'background': 'initial',
+                            'margin': '0'
+                        });
+                        diff = 0;
+                    }
+                    offDutyLeft[0].style.width = $rootScope.calculateWidth(scope.$parent.minScheduleTime, workStartTime) - diff + "px";
 
+                    diff = 1;
+                    if (workEndTime > runs[runs.length - 1].returnEndTime) {
+                        offDutyRight.prev().css({
+                                'width': $rootScope.calculateWidth(runs[runs.length - 1].returnEndTime, workEndTime),
+                                'background': 'initial',
+                                'margin': '0'
+                            });
+                        diff = 0;
+                    }
+                    offDutyRight[0].style.width = $rootScope.calculateWidth(workEndTime, scope.$parent.maxScheduleTime) - diff + "px";
+
+                    elem[0].style.width = $rootScope.calculateWidth(scope.$parent.minScheduleTime, scope.$parent.maxScheduleTime) + "px";
+                });
+            }
+        };
+    }
+    ])
+    .directive('run', ['$rootScope', '$compile', '$templateCache', function ($rootScope, $compile, $templateCache) {
+        return {
+            template: $templateCache.get('runTpl'),
+            link: function (scope, elem) {
+
+                var setSpreaderSize = function(spreader, leftWidth, rightWidth) {
+                    spreader.style.width = leftWidth + rightWidth + 2 + "px";
+                    spreader.style.marginLeft = -leftWidth + "px";
+                    spreader.style.marginRight = -rightWidth + "px";
+                };
+
+                var calculateOrderWidth = function(order) {
+                    return $rootScope.calculateWidth(order.startTime, order.endTime);
+                };
+
+                scope.$watch('millsInPx', function () {
+                    /* calculate run header and footer width*/
+                    var headerWidth = $rootScope.calculateWidth(scope.run.loadingStartTime, scope.run.loadingEndTime);
+                    var footerWidth = $rootScope.calculateWidth(scope.run.returnStartTime, scope.run.returnEndTime);
+                    elem.children(":first")[0].style.width = headerWidth - 2 + "px";
+                    elem.children(":last")[0].style.width = footerWidth - 2 + "px";
+
+                    /* calculate run spreaders size*/
+                    var spreaders = elem.children(".spreader");
+                    var firstOrderWidth = calculateOrderWidth(scope.run.orders[0]);
+                    setSpreaderSize(spreaders[0], headerWidth / 2, firstOrderWidth / 2);
+                    for (var i = 1; i < scope.run.orders.length; i++) {
+                        var prevOrderWidth = calculateOrderWidth(scope.run.orders[i - 1]);
+                        var nextOrderWidth = calculateOrderWidth(scope.run.orders[i]);
+                        setSpreaderSize(spreaders[i], prevOrderWidth / 2, nextOrderWidth / 2);
+                    }
+                    var lastOrderWidth = calculateOrderWidth(scope.run.orders[scope.run.orders.length - 1]);
+                    setSpreaderSize(spreaders[spreaders.length - 1], footerWidth / 2, lastOrderWidth / 2);
+
+                    // run width
+                    elem[0].style.width = $rootScope.calculateWidth(scope.run.loadingStartTime, scope.run.returnEndTime) - 2 + "px";
+                });
+            }
+        };
+    }
+    ])
+    .directive('scheduledOrder', ['$rootScope', '$templateCache', function ($rootScope, $templateCache) {
+        return {
+            link: function (scope, elem, attrs) {
+                scope.$watch('millsInPx', function () {
+                    var width = $rootScope.calculateWidth(scope.order.startTime, scope.order.endTime) - 2;
+                    elem[0].style.width = width + "px";
+                });
             }
         };
     }
